@@ -1,5 +1,57 @@
-﻿@page "/Registro/Create"
+﻿@page "/Prestamo/Create"
+@inject PrestamoService prestamoService
+@rendermode InteractiveServer
 
+<PageTitle>Crear</PageTitle>
+<EditForm Model="prestamos" OnValidSubmit="Guardar">
+<DataAnnotationsValidator/>
+	<div class="container">
+		<div class="shadow-lg">
+			<div class="card-header">
+				<div class="card-title">
+					<h3><strong>Crear Deudor</strong></h3>
+				</div>
+			</div>
+			<div class="card-body">
+				<div class="col-4">
+					<label class="form-label">Nombre</label>
+					<InputText class="form-label" @bind-Value="prestamos.Nombres"></InputText>
+					<ValidationMessage For="()=> prestamos.Nombres"></ValidationMessage>
+				</div>
+				<div class="col-4">
+					<label class="form-label">Concepto</label>
+					<InputText class="form-label" @bind-Value="prestamos.Concepto"></InputText>
+					<ValidationMessage For="()=> prestamos.Concepto"></ValidationMessage>
+				</div>
+				<div class="col-4">
+					<label class="form-label">Monto</label>
+					<InputNumber class="form-label" @bind-Value="prestamos.Monto"></InputNumber>
+					<ValidationMessage For="()=> prestamos.Monto"></ValidationMessage>
+				</div>
+			</div>
+			<div class="card-footer">
+					<div class="col-4">
+						<button type="submit" class="btn btn-outline-primary">Crear</button>
+					</div>
+					<div class="col-4">
+						<a href="/Prestamo/Index"
+						   class="btn btn-primary">
+							<span class="bi bi-arrow-left mt-3"></span> Volver
+						</a>
+					</div>
+			</div>
+		</div>
+	</div>
+	@Notificacion
+</EditForm>
 @code {
+	public Prestamos prestamos { get; set; } = new Prestamos();
+	public string? Notificacion { get; set; }
 
+	public async Task Guardar()
+	{
+		var guardar = await prestamoService.Guardar(prestamos);
+		Notificacion = "Se creo correctamente.";
+		return;
+	}
 }
