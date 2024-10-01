@@ -1,5 +1,7 @@
 using MarcosRosario_Ap1_P1.Components;
 using MarcosRosario_Ap1_P1.DAL;
+using MarcosRosario_Ap1_P1.Models;
+using MarcosRosario_Ap1_P1.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +13,9 @@ builder.Services.AddRazorComponents()
 var ConStr = builder.Configuration.GetConnectionString("ConStr");
 
 builder.Services.AddDbContext<Contexto>(o => o.UseSqlite(ConStr));
+
+builder.Services.AddScoped<PrestamoService>();
+builder.Services.AddScoped<Prestamos>();
 
 var app = builder.Build();
 
