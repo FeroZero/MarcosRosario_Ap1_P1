@@ -1,4 +1,6 @@
-﻿@page "/Registro/Index"
+﻿@page "/Prestamo/Index"
+@inject PrestamoService prestamoService
+@rendermode InteractiveServer
 
 
 <PageTitle>Index</PageTitle>
@@ -6,28 +8,54 @@
 	<div class="card shadow-lg">
 		<div class="card-header">
 			<div class="card-title">
-				<h2>Registro</h2>
+				<h2>Registro de Deudores</h2>
 			</div>
-			<div class="text-end">
-				<button class="btn btn-outline-primary">Crear</button>
+			<div>
+				<a href="/Prestamo/Create"
+				   class="btn btn-primary">
+					<span class="bi bi-plus-square mt-3"></span> Crear
+				</a>
 			</div>
 		</div>
 		<div class="card-body">
 			<table class="table">
 				<thead>
 					<tr>
+						<th>Id</th>
+						<th>Nombre</th>
+						<th>Concepto</th>
+						<th>Monto</th>
+						<th>Editar</th>
+						<th>Detalle</th>
+						<th>Eliminar</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-					</tr>
+						@foreach(var prestamos in ListaPrestamos)
+						{
+							<tr>
+								<td>@prestamos.PrestamoId</td>
+								<td>@prestamos.Nombres</td>
+								<td>@prestamos.Concepto</td>
+								<td>@prestamos.Monto</td>
+								<td class="text-center">
+								<a href="/Prestamo/Details/@prestamos.PrestamoId" class="btn btn-outline-secondary bi bi-eye">Ver</a>
+								</td>
+								<td class="text-center">
+									<a href="/Prestamo/Edit/@prestamos.PrestamoId" class="btn btn-outline-warning bi bi-pencil-square">Editar</a>
+								</td>
+								<td class="text-center">
+								<a href="/Prestamo/Delete/@prestamos.PrestamoId" class="btn btn-outline-danger bi bi-trash">Eliminar</a>
+								</td>
+							</tr>	
+						}
 				</tbody>
 			</table>
 		</div>
 	</div>
 </div>
 
-<a href="#"
+@* <a href="#"
    class="btn btn-primary">
 	<span class="bi bi-plus-square mt-3"></span> Crear
 </a>
@@ -48,7 +76,13 @@
 <a href="#"
    class="btn btn-primary">
 	<span class="bi bi-arrow-left mt-3"></span> Volver
-</a>
+</a> *@
 @code {
+	public List<Prestamos> ListaPrestamos { get; set; } = new List<Prestamos>();
+	public string? Notificacion { get; set; }
 
+	protected override async Task OnInitializedAsync()
+	{
+		ListaPrestamos = await prestamoService.Listar(p => true);
+	}
 }
